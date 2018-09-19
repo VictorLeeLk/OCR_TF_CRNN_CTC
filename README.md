@@ -35,7 +35,7 @@ sh dowload_Synth90k_data.sh
 ```
 * Secondly supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
 
-For example:
+For example: image_list.txt
 ```bash
 path/1/2/373_coley_14845.jpg coley
 path/17/5/176_Nevadans_51437.jpg nevadans
@@ -43,7 +43,7 @@ path/17/5/176_Nevadans_51437.jpg nevadans
 * Then you are supposed to convert your dataset into tensorflow records which can be done by
 ```bash
 python tools/create_crnn_ctc_tfrecord.py \
-  --image_dir path/to/image/dir/ --anno_file path/to/list.txt --data_dir ./tfrecords/ \
+  --image_dir path/to/image/dir/ --anno_file path/to/image_list.txt --data_dir ./tfrecords/ \
   --validation_split_fraction 0.1
 ```
 All training image will be scaled into (32, 100, 3) and write to tfrecord file.  
