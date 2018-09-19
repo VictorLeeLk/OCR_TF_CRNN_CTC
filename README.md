@@ -3,3 +3,6 @@ This software implements the Convolutional Recurrent Neural Network (CRNN), a co
 https://arxiv.org/abs/1507.05717
 
 
+# Installation
+This software uses tensorflow-gpu opencv-python numpy.
+
