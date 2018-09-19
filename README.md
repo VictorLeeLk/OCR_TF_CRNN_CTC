@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ### Data Preparation
 * Firstly you need to download [Synth90k](Synth 90k) and extract images data into a folder. 
 ```bash
-sh download_synth90k.sh
+sh dowload_Synth90k_data.sh
 ```
 * Then supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
 
