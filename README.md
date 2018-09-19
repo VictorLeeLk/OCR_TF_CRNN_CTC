@@ -3,6 +3,17 @@ This software implements the Convolutional Recurrent Neural Network (CRNN), a co
 https://arxiv.org/abs/1507.05717
 
 
-# Installation
-This software uses tensorflow-gpu opencv-python numpy.
+# Dependencies
+All dependencies should be installed as follow:
+* tensorflow >= 1.3
+* opencv-python
+* numpy
+
+Required packages may be installed with
+```bash
+pip install -r requirements.txt
+```
+
+
+# Run demo
 
