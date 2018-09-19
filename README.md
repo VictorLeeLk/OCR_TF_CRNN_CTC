@@ -16,7 +16,12 @@ pip install -r requirements.txt
 
 
 # Run demo
-
+```bash
+export PYTHONPATH=$PYTHONPATH:./
+python tools/inference_crnn_ctc.py \
+  --image_dir ./test_data/images/ --image_list ./test_data/image_list.txt \
+  --model_dir ./
+```
 # Train a new model
 
 ### Data Preparation
