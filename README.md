@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 # Train a new model
 
-## Data Preparation
+###### Data Preparation
 * Firstly you need to store all your image data in a folder. 
 * Then supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
 
