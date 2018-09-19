@@ -24,14 +24,14 @@ pip install -r requirements.txt
 ```bash
 sh dowload_Synth90k_data.sh
 ```
-* Then supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
+* Secondly supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
 
 For example:
 ```bash
 path/1/2/373_coley_14845.jpg coley
 path/17/5/176_Nevadans_51437.jpg nevadans
 ```
-* Thirdly you are supposed to convert your dataset into tensorflow records which can be done by
+* Then you are supposed to convert your dataset into tensorflow records which can be done by
 ```bash
 python tools/
 ```
