@@ -33,7 +33,8 @@ path/17/5/176_Nevadans_51437.jpg nevadans
 ```
 * Then you are supposed to convert your dataset into tensorflow records which can be done by
 ```bash
-python tools/create_crnn_ctc_tfrecord.py --image_dir path/to/image/dir/ --anno_file path/to/list.txt --data_dir ./tfrecords/ --validation_split_fraction 0.1
+python tools/create_crnn_ctc_tfrecord.py \
+  --image_dir path/to/image/dir/ --anno_file path/to/list.txt --data_dir ./tfrecords/ --validation_split_fraction 0.1
 ```
 All training image will be scaled into (32, 100, 3) and write to tfrecord file.  
 The dataset will be divided into train abd validation set and you can change the parameter to control the ratio of them.
