@@ -20,7 +20,10 @@ pip install -r requirements.txt
 # Train a new model
 
 ### Data Preparation
-* Firstly you need to store all your image data in a folder. 
+* Firstly you need to download [Synth90k](Synth 90k) and extract images data into a folder. 
+```bash
+sh download_synth90k.sh
+```
 * Then supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
 
 For example:
