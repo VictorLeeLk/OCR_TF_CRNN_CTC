@@ -25,7 +25,7 @@ python tools/inference_crnn_ctc.py \
 # Train a new model
 
 ### Data Preparation
-* Firstly you need to download [Synth90k](http://www.robots.ox.ac.uk/~vgg/data/text/) and extract images data into a folder. 
+* Firstly you need to download [Synth90k](http://www.robots.ox.ac.uk/~vgg/data/text/) dataset and extract it into a folder. 
 ```bash
 sh dowload_Synth90k_data.sh
 ```
