@@ -47,6 +47,6 @@ python tools/create_crnn_ctc_tfrecord.py \
   --validation_split_fraction 0.1
 ```
 All training image will be scaled into (32, 100, 3) and write to tfrecord file.  
-The dataset will be divided into train abd validation set and you can change the parameter to control the ratio of them.
+The dataset will be divided into train and validation set and you can change the parameter to control the ratio of them.
 
 ### Train model
