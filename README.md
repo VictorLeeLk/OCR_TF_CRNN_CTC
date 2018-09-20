@@ -61,5 +61,9 @@ The dataset will be divided into train and validation set and you can change the
 ```bash
 python tools/train_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/ --batch_size 32
 ```
+### Evaluate model
+```bash
+python tools/eval_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/
+```
 
 # Todo
