@@ -12,7 +12,7 @@ All dependencies should be installed as follow:
 * opencv-python
 * numpy
 
-Required packages may be installed with
+Required packages can be installed with
 ```bash
 pip install -r requirements.txt
 ```
