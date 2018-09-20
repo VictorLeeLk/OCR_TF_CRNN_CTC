@@ -70,7 +70,7 @@ python tools/create_crnn_ctc_tfrecord.py \
   --image_dir path/to/90kDICT32px/ --anno_file path/to/image_list.txt --data_dir ./tfrecords/ \
   --validation_split_fraction 0.1
 ```
-Make sure images can be read from:
+Note: make sure that images can be read from the path you specificed, such as:
 ```bash
 path/to/90kDICT32px/1/2/373_coley_14845.jpg
 path/to/90kDICT32px/17/5/176_Nevadans_51437.jpg
