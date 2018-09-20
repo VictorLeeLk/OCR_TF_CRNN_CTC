@@ -24,13 +24,14 @@ Asume your current work directory is CRNN_CTC_Tensorflow：
 ```bash
 cd path/to/your/CRNN_CTC_Tensorflow/
 ```
-Dowload pretrained model from:
+Dowload pretrained model [bs_synth90k_model]() and extract it to your dist.
+
 Export current work directory path into PYTHONPATH and run inference demo:
 ```bash
 export PYTHONPATH=$PYTHONPATH:./
 python tools/inference_crnn_ctc.py \
   --image_dir ./test_data/images/ --image_list ./test_data/image_list.txt \
-  --model_dir ./bs_synth90k_model/
+  --model_dir path/to/your/bs_synth90k_model/
 ```
 Result is:
 
