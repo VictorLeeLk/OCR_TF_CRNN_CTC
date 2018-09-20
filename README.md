@@ -24,7 +24,7 @@ Asume your current work directory is CRNN_CTC_Tensorflow：
 ```bash
 cd path/to/your/CRNN_CTC_Tensorflow/
 ```
-Export current path into PYTHONPATH and run inference demo:
+Export current work directory path into PYTHONPATH and run inference demo:
 ```bash
 export PYTHONPATH=$PYTHONPATH:./
 python tools/inference_crnn_ctc.py \
