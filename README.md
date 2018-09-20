@@ -58,6 +58,8 @@ All training image will be scaled into (32, 100, 3) and write to tfrecord file.
 The dataset will be divided into train and validation set and you can change the parameter to control the ratio of them.
 
 ### Train model
-
+```bash
+python tools/train_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/ --batch_size 32
+```
 
 # Todo
