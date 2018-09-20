@@ -41,6 +41,10 @@ python tools/inference_crnn_ctc.py \
 ```
 
 Result is:
+```
+Predict 1_AFTERSHAVE_1509.jpg image as: atershave
+```
+![](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/data/20180919022200.png?raw=true)
 
 
 # Train a new model
