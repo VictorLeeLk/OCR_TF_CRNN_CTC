@@ -28,7 +28,7 @@ Dowload pretrained model bs_synth90k_model and extract it to your disc.
 
 [Baidu]()  
 
-[Google Drive](https://drive.google.com/drive/folders/1SAZSWsaWpCCFXFV42JZUCZQDskNVqwo-?usp=sharing)  
+[Google Drive](https://drive.google.com/file/d/16YDeanjDFr3fCf6o9PaEZdpnqRIzPpeG/view?usp=sharing)  
 
 Export current work directory path into PYTHONPATH:  
 
