@@ -61,14 +61,20 @@ sh dowload_Synth90k_data.sh
 
 For example: image_list.txt
 ```bash
-path/1/2/373_coley_14845.jpg coley
-path/17/5/176_Nevadans_51437.jpg nevadans
+90kDICT32px/1/2/373_coley_14845.jpg coley
+90kDICT32px/17/5/176_Nevadans_51437.jpg nevadans
 ```
 * Then you are suppose to convert your dataset into tensorflow records which can be done by
 ```bash
 python tools/create_crnn_ctc_tfrecord.py \
-  --image_dir path/to/image/dir/ --anno_file path/to/image_list.txt --data_dir ./tfrecords/ \
+  --image_dir path/to/90kDICT32px/ --anno_file path/to/image_list.txt --data_dir ./tfrecords/ \
   --validation_split_fraction 0.1
+```
+Make sure images can be read from:
+```bash
+path/to/90kDICT32px/1/2/373_coley_14845.jpg
+path/to/90kDICT32px/17/5/176_Nevadans_51437.jpg
+.......
 ```
 All training image will be scaled into (32, 100, 3) and write to tfrecord file.  
 The dataset will be divided into train and validation set and you can change the parameter to control the ratio of them.
