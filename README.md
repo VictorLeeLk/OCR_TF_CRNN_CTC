@@ -24,9 +24,11 @@ Asume your current work directory is CRNN_CTC_Tensorflow：
 ```bash
 cd path/to/your/CRNN_CTC_Tensorflow/
 ```
-Dowload pretrained model bs_synth90k_model and extract it to your disc.
-[Baidu]()
-[Google Drive](https://drive.google.com/drive/folders/1SAZSWsaWpCCFXFV42JZUCZQDskNVqwo-?usp=sharing)
+Dowload pretrained model bs_synth90k_model and extract it to your disc.  
+
+[Baidu]()  
+
+[Google Drive](https://drive.google.com/drive/folders/1SAZSWsaWpCCFXFV42JZUCZQDskNVqwo-?usp=sharing)  
 
 Export current work directory path into PYTHONPATH:  
 
