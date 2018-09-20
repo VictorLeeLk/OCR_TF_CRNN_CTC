@@ -44,8 +44,15 @@ Result is:
 ```
 Predict 1_AFTERSHAVE_1509.jpg image as: atershave
 ```
-![](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/data/20180919022200.png?raw=true)
-
+![1_AFTERSHAVE_1509.jpg](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/test_data/images/1_AFTERSHAVE_1509.jpg?raw=true)
+```
+Predict 2_LARIAT_43420.jpg image as: lariat
+```
+![2_LARIAT_43420](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/test_data/images/2_LARIAT_43420.jpg?raw=true)
+```
+Predict 3_REINFECTION_64188.jpg image as: reinbeoton
+```
+![3_REINFECTION_64188.jpg](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/test_data/images/3_REINFECTION_64188.jpg?raw=true)
 
 # Train a new model
 
