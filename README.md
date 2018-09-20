@@ -64,7 +64,7 @@ For example: image_list.txt
 path/1/2/373_coley_14845.jpg coley
 path/17/5/176_Nevadans_51437.jpg nevadans
 ```
-* Then you are supposed to convert your dataset into tensorflow records which can be done by
+* Then you are suppose to convert your dataset into tensorflow records which can be done by
 ```bash
 python tools/create_crnn_ctc_tfrecord.py \
   --image_dir path/to/image/dir/ --anno_file path/to/image_list.txt --data_dir ./tfrecords/ \
