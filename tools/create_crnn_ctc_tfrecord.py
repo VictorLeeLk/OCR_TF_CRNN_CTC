@@ -45,6 +45,8 @@ def _int64_feature(value):
     return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
 
 def _bytes_feature(value):
+    if sys.version_info[0] > 2:
+        value = value.encode('utf-8') # convert string object to bytes
     if not isinstance(value, list):
         value = [value]
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=value))
