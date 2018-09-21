@@ -4,4 +4,4 @@
 wget -c http://www.robots.ox.ac.uk/~vgg/data/text/mjsynth.tar.gz
 tar -xzvf mjsynth.tar.gz
 
-find ./data/mnt/ | xargs ls -d | grep jpg > image_list.txt
+find ./mnt/ | xargs ls -d | grep jpg > image_list.txt
