@@ -56,10 +56,8 @@ Predict 2_LARIAT_43420.jpg image as: lariat
 # Train a new model
 
 ### Data Preparation
-* Firstly you need to download [Synth90k](http://www.robots.ox.ac.uk/~vgg/data/text/) dataset and extract it into a folder. 
-```bash
-sh dowload_Synth90k_data.sh
-```
+* Firstly you need to download [Synth90k](http://www.robots.ox.ac.uk/~vgg/data/text/) dataset and extract it into a folder.   
+
 * Secondly supply a txt file to specify the relative path to the image data dir and it's corresponding text label.   
 
 For example: image_list.txt
