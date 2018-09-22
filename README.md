@@ -88,7 +88,7 @@ After several times of iteration you can check the output in terminal as follow:
 
 ![](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/data/20180919022201.png?raw=true)
 
-During my experiment the loss drops as follows:
+During my experiment the loss drops as follow:
 ![](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/data/20180919202432.png?raw=true)
 
 ### Evaluate model
