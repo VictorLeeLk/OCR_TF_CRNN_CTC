@@ -25,7 +25,7 @@ Asume your current work directory is CRNN_CTC_Tensorflow：
 cd path/to/your/CRNN_CTC_Tensorflow/
 ```
 Dowload pretrained model and extract it to your disc.    
-[Baidu](https://pan.baidu.com/s/1J5cFNnSs5xPFY2EnTb7FjQ)|[Google Drive](https://drive.google.com/file/d/16YDeanjDFr3fCf6o9PaEZdpnqRIzPpeG/view?usp=sharing)  
+[Baidu](https://pan.baidu.com/s/1J5cFNnSs5xPFY2EnTb7FjQ) or [Google Drive](https://drive.google.com/file/d/16YDeanjDFr3fCf6o9PaEZdpnqRIzPpeG/view?usp=sharing)  
 
 Export current work directory path into PYTHONPATH:  
 
