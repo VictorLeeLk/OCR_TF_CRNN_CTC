@@ -6,4 +6,6 @@ tar -xzvf mjsynth.tar.gz
 
 find ./mnt/ | xargs ls -d | grep jpg > image_list.txt
 
+python create_synth90k_tfrecord.py
+
 
