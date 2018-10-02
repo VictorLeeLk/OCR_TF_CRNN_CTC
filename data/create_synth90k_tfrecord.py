@@ -69,7 +69,7 @@ def _write_tfrecord(dataset_split, anno_lines):
             line = line.strip()
             image_name = line.split()[0]
             image_path = os.path.join(FLAGS.image_dir, image_name)
-            # image_name = xxx/xxx/xxx/1234_abcd_8888.jpg
+            # image_name = xxx/xxx/xxx/1234_AbCd_8888.jpg
             # label = abcd
             label = line.split('/')[-1].split('_')[1].lower()
 
