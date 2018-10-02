@@ -71,7 +71,7 @@ def _write_tfrecord(dataset_split, anno_lines):
             image_path = os.path.join(FLAGS.image_dir, image_name)
             # image_name = xxx/xxx/xxx/1234_abcd_8888.jpg
             # label = abcd
-            label = line.split('/')[-1].split('_')[1]
+            label = line.split('/')[-1].split('_')[1].lower()
 
             image = cv2.imread(image_path)
             if image is None: 
