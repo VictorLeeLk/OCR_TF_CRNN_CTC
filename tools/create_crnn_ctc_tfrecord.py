@@ -69,7 +69,7 @@ def _write_tfrecord(dataset_split, anno_lines):
             line = line.strip()
             image_name = line.split()[0]
             image_path = os.path.join(FLAGS.image_dir, image_name)
-            label = line.split()[1]
+            label = line.split()[1].lower()
 
             image = cv2.imread(image_path)
             if image is None: 
