@@ -85,10 +85,11 @@ def _write_tfrecord(dataset_split, anno_lines):
             })
             example = tf.train.Example(features=features)
             writer.write(example.SerializeToString())
-            sys.stdout.write('\r>>Writing to {:s}.tfrecords {:d}/{:d}'.format(dataset_split, i + 1, len(anno_lines)))
+            sys.stdout.write('\r>> Writing to {:s}.tfrecords {:d}/{:d}'.format(dataset_split, i + 1, len(anno_lines)))
             sys.stdout.flush()
         sys.stdout.write('\n')
         sys.stdout.write('>> {:s}.tfrecords write finish.'.format(dataset_split))
+        sys.stdout.write('\n')
         sys.stdout.flush()
 
 def _convert_dataset():
