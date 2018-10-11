@@ -78,6 +78,12 @@ path/to/90kDICT32px/17/5/176_Nevadans_51437.jpg
 All training image will be scaled into (32, 100, 3) and write to tfrecord file.  
 The dataset will be divided into train and validation set and you can change the parameter to control the ratio of them.
 
+Otherwise you can use the automatically download tools:
+```
+cd ./data
+sh dowload_synth90k_data.sh
+```
+
 ### Train model
 ```bash
 python tools/train_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/ --batch_size 32
