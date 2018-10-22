@@ -29,17 +29,17 @@ tf.app.flags.DEFINE_integer(
     'num_threads', 4, 'The number of threads to use in batch shuffling') 
 
 tf.app.flags.DEFINE_integer(
-    'epochs_per_eval', 100, 'The number of training epochs to run between evaluations.')
+    'step_per_eval', 100, 'The number of training steps to run between evaluations.')
 
 tf.app.flags.DEFINE_integer(
-    'epochs_per_save', 1000, 'The number of training epochs to run between save checkpoints.')
+    'step_per_save', 1000, 'The number of training steps to run between save checkpoints.')
 
 # ------------------------------------Basic prameters------------------------------------
 tf.app.flags.DEFINE_integer(
     'batch_size', 32, 'The number of samples in each batch.')
 
 tf.app.flags.DEFINE_integer(
-    'max_train_epochs', 20000, 'The number of maximum iteration epochs for traning')
+    'max_train_steps', 20000, 'The number of maximum iteration steps for traning')
 
 tf.app.flags.DEFINE_float(
     'learning_rate', 0.1, 'The initial learning rate for traning.')
@@ -181,15 +181,15 @@ def _train_crnn_ctc():
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
-        for epoch in range(FLAGS.max_train_epochs):
+        for step in range(FLAGS.max_train_steps):
             _, cl, lr, sd, preds, gt_labels, summary = sess.run(
                 [optimizer, ctc_loss, learning_rate, sequence_distance, ctc_decoded, input_labels, merge_summary_op])
 
-            if (epoch + 1) % FLAGS.epochs_per_save == 0: 
+            if (step + 1) % FLAGS.step_per_save == 0: 
                 summary_writer.add_summary(summary=summary, global_step=epoch)
                 saver.save(sess=sess, save_path=model_save_path, global_step=epoch)
 
-            if (epoch + 1) % FLAGS.epochs_per_eval == 0:
+            if (step + 1) % FLAGS.step_per_eval == 0:
                 # calculate the precision
                 preds = _sparse_matrix_to_list(preds[0])
                 gt_labels = _sparse_matrix_to_list(gt_labels)
@@ -216,8 +216,8 @@ def _train_crnn_ctc():
                                 accuracy.append(0)
                 accuracy = np.mean(np.array(accuracy).astype(np.float32), axis=0)
 
-                print('Epoch:{:d} learning_rate={:9f} ctc_loss={:9f} sequence_distance={:9f} train_accuracy={:9f}'.format(
-                    epoch + 1, lr, cl, sd, accuracy))
+                print('step:{:d} learning_rate={:9f} ctc_loss={:9f} sequence_distance={:9f} train_accuracy={:9f}'.format(
+                    step + 1, lr, cl, sd, accuracy))
             
         # close tensorboard writer
         summary_writer.close()
