@@ -28,7 +28,7 @@ class CRNNCTCNetwork(object):
                             weights_initializer=tf.truncated_normal_initializer(stddev=0.01),
                             weights_regularizer=slim.l2_regularizer(0.0005),
                             biases_initializer=None):
-            net = slim.repeat(input_tensor, 2, slim.conv2d, 64, kernel_size=3, stride=1, scope='conv1') # [batch,32, 100, 64]
+            net = slim.repeat(input_tensor, 2, slim.conv2d, 64, kernel_size=3, stride=1, scope='conv1') # [batch, 32, 100, 64]
             net = slim.max_pool2d(net, kernel_size=2, stride=2, scope='pool1') # [batch, 16, 50, 64]
             net = slim.repeat(net, 2, slim.conv2d, 128, kernel_size=3, stride=1, scope='conv2') # [batch, 16, 50, 128]
             net = slim.max_pool2d(net, kernel_size=2, stride=2, scope='pool2') # [batch, 8, 25, 128]
