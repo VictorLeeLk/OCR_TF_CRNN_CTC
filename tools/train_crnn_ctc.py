@@ -186,8 +186,8 @@ def _train_crnn_ctc():
                 [optimizer, ctc_loss, learning_rate, sequence_distance, ctc_decoded, input_labels, merge_summary_op])
 
             if (step + 1) % FLAGS.step_per_save == 0: 
-                summary_writer.add_summary(summary=summary, global_step=epoch)
-                saver.save(sess=sess, save_path=model_save_path, global_step=epoch)
+                summary_writer.add_summary(summary=summary, global_step=step)
+                saver.save(sess=sess, save_path=model_save_path, global_step=step)
 
             if (step + 1) % FLAGS.step_per_eval == 0:
                 # calculate the precision
