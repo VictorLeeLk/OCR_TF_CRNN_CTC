@@ -128,7 +128,7 @@ def _eval_crnn_ctc():
     test_sample_count = 0
     for record in tf.python_io.tf_record_iterator(tfrecord_path):
         test_sample_count += 1
-    loops_nums = test_sample_count // FLAGS.batch_size
+    step_nums = test_sample_count // FLAGS.batch_size
 
     sess_config = tf.ConfigProto()
     sess_config.gpu_options.allow_growth = True
@@ -139,14 +139,14 @@ def _eval_crnn_ctc():
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
-        preds, imgs, lbls, names = sess.run([ctc_decoded, input_images, input_labels, input_names])
+        accuracy = []
+
+        for _ in range(step_nums):
+            preds, imgs, lbls, names = sess.run([ctc_decoded, input_images, input_labels, input_names])
  
-        preds = _sparse_matrix_to_list(preds[0])
-        lbls = _sparse_matrix_to_list(lbls)
+            preds = _sparse_matrix_to_list(preds[0])
+            lbls = _sparse_matrix_to_list(lbls)
 
-        accuracy = [] 
-
-        for epoch in range(loops_nums):
             for index, lbl in enumerate(lbls):
                 pred = preds[index]
                 total_count = len(lbl)
