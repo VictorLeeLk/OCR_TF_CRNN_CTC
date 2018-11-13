@@ -23,7 +23,7 @@ Note: This software cannot run in the tensorflow lastest version r1.11.0 since i
 
 Asume your current work directory is CRNN_CTC_Tensorflow：
 ```bash
-cd path/to/your/CRNN_CTC_Tensorflow/
+cd path/to/your/OCR_TF_CRNN_CTC/
 ```
 Dowload pretrained model and extract it to your disc:  [Baidu](https://pan.baidu.com/s/1J5cFNnSs5xPFY2EnTb7FjQ) or [Google Drive](https://drive.google.com/file/d/16YDeanjDFr3fCf6o9PaEZdpnqRIzPpeG/view?usp=sharing)  
 
