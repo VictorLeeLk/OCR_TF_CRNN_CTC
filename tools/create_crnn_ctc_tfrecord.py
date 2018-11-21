@@ -16,7 +16,7 @@ import tensorflow as tf
 import cv2
 import numpy as np
 
-_IMAGE_SIZE = (100, 32)
+_IMAGE_HEIGHT = 32
 
 
 tf.app.flags.DEFINE_string(
@@ -76,9 +76,17 @@ def _write_tfrecord(dataset_split, anno_lines):
                 continue # skip bad image.
             image = cv2.resize(image, _IMAGE_SIZE)
 
+            h, w, c = image.shape
+            height = _IMAGE_HEIGHT
+            width = int(w * height / h)
+            image = cv2.resize(image, (width, height))
+            is_success, image_buffer = cv2.imencode('.jpg', image)
+            if not is_success:
+                continue
+
             features = tf.train.Features(feature={
                'labels': _int64_feature(_string_to_int(label)),
-               'images': _bytes_feature(image.tostring()),
+               'images': _bytes_feature(image_buffer.tostring()),
                'imagenames': _bytes_feature(image_name)
             })
             example = tf.train.Example(features=features)
