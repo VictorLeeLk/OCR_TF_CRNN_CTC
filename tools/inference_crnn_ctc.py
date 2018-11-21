@@ -15,8 +15,7 @@ from crnn_model import model
 
 os.environ["CUDA_VISIBLE_DEVICES"]=""
 
-_IMAGE_SIZE = (100, 32)
-_SEQUEENCE_LENGTH = 25 # 100 /4
+_IMAGE_HEIGHT = 32
 
 # ------------------------------------Basic prameters------------------------------------
 tf.app.flags.DEFINE_string(
@@ -36,7 +35,6 @@ tf.app.flags.DEFINE_integer(
     'lstm_hidden_uints', 256, 'The number of units in each LSTM cell')
 
 # ------------------------------------Char dictionary------------------------------------
-
 tf.app.flags.DEFINE_string(
     'char_map_json_file', './char_map/char_map.json', 'Path to char map json file')
 
@@ -76,8 +74,7 @@ def _int_to_string(value, char_map_dict=None):
     raise ValueError('char map dict not has {:d} value. convert index to char failed.'.format(value))
 
 def _inference_crnn_ctc():
-    w, h = _IMAGE_SIZE
-    input_images = tf.placeholder(dtype=tf.float32, shape=[1, h, w, 3])
+    input_image = tf.placeholder(dtype=tf.float32, shape=[1, _IMAGE_HEIGHT, None, 3])
     char_map_dict = json.load(open(FLAGS.char_map_json_file, 'r'))
     # initialise the net model
     crnn_net = model.CRNNCTCNetwork(phase='test',
@@ -86,9 +83,11 @@ def _inference_crnn_ctc():
                                     num_classes=len(char_map_dict.keys()) + 1)
 
     with tf.variable_scope('CRNN_CTC', reuse=False):
-        net_out = crnn_net.build_network(input_tensor=input_images)
+        net_out = crnn_net.build_network(input_image)
 
-    ctc_decoded, ct_log_prob = tf.nn.ctc_beam_search_decoder(net_out, _SEQUEENCE_LENGTH*np.ones(1), merge_repeated=True)
+    input_sequence_length = tf.placeholder(tf.int32, shape=[1], name='input_sequence_length')
+
+    ctc_decoded, ct_log_prob = tf.nn.ctc_beam_search_decoder(net_out, input_sequence_length, merge_repeated=True)
 
     with open(FLAGS.image_list, 'r') as fd:
        image_names = [line.strip() for line in fd.readlines()]
@@ -103,11 +102,16 @@ def _inference_crnn_ctc():
 
         for image_name in image_names:
             image_path = os.path.join(FLAGS.image_dir, image_name)
-            image = cv2.resize(cv2.imread(image_path), _IMAGE_SIZE)
+            image = cv2.imread(image_path)
+            h, w, c = image.shape
+            height = _IMAGE_HEIGHT
+            width = int(w * height / h)
+            image = cv2.resize(image, (width, height))
+            image = np.expand_dims(image, axis=0)
+            image = np.array(image, dtype=np.float32)
+            seq_len = np.array([width / 4], dtype=np.int32)
 
-            input_image = np.expand_dims(image, axis=0)
-            
-            preds = sess.run(ctc_decoded, feed_dict={input_images:input_image})
+            preds = sess.run(ctc_decoded, feed_dict={input_image:image, input_sequence_length:seq_len})
  
             preds = _sparse_matrix_to_list(preds[0])
 
