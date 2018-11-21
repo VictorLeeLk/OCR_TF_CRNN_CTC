@@ -74,7 +74,7 @@ path/to/90kDICT32px/1/2/373_coley_14845.jpg
 path/to/90kDICT32px/17/5/176_Nevadans_51437.jpg
 .......
 ```
-All training image will be scaled into (32, 100, 3) and write to tfrecord file.  
+All training image will be scaled into height 32 and write to tfrecord file.  
 The dataset will be divided into train and validation set and you can change the parameter to control the ratio of them.
 
 Otherwise you can use the dowload_synth90k_and_create_tfrecord.sh script automatically create tfrecord:
