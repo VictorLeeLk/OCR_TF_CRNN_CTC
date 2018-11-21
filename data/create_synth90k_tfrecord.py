@@ -115,7 +115,7 @@ def _convert_dataset():
     for dataset_split in ['train', 'validation']:
         _write_tfrecord(dataset_split, dataset_anno_lines[dataset_split])
 
-    _write_tfrecord('validation', validation_anno_lines)
+    #_write_tfrecord('validation', validation_anno_lines)
 
 def main(unused_argv):
     _convert_dataset()
