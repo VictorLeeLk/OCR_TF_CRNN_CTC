@@ -16,7 +16,7 @@ import tensorflow as tf
 import cv2
 import numpy as np
 
-_IMAGE_SIZE = (100, 32)
+_IMAGE_HEIGHT = 32
 
 
 tf.app.flags.DEFINE_string(
@@ -29,7 +29,7 @@ tf.app.flags.DEFINE_string(
     'data_dir', './tfrecords/', 'Directory where tfrecords are written to.')
 
 tf.app.flags.DEFINE_float(
-    'validation_split_fraction', 0.1, 'Fraction of training data to use for validation.')
+    'validation_split_fraction', 0.01, 'Fraction of training data to use for validation.')
 
 tf.app.flags.DEFINE_boolean(
     'shuffle_list', True, 'Whether shuffle data in annotation file list.')
@@ -76,11 +76,18 @@ def _write_tfrecord(dataset_split, anno_lines):
             image = cv2.imread(image_path)
             if image is None: 
                 continue # skip bad image.
-            image = cv2.resize(image, _IMAGE_SIZE)
+
+            h, w, c = image.shape
+            height = _IMAGE_HEIGHT
+            width = int(w * height / h)
+            image = cv2.resize(image, (width, height))
+            is_success, image_buffer = cv2.imencode('.jpg', image)
+            if not is_success:
+                continue 
 
             features = tf.train.Features(feature={
                'labels': _int64_feature(_string_to_int(label)),
-               'images': _bytes_feature(image.tostring()),
+               'images': _bytes_feature(image_buffer.tostring()),
                'imagenames': _bytes_feature(image_name)
             })
             example = tf.train.Example(features=features)
@@ -107,6 +114,8 @@ def _convert_dataset():
     dataset_anno_lines = {'train' : train_anno_lines, 'validation' : validation_anno_lines}
     for dataset_split in ['train', 'validation']:
         _write_tfrecord(dataset_split, dataset_anno_lines[dataset_split])
+
+    _write_tfrecord('validation', validation_anno_lines)
 
 def main(unused_argv):
     _convert_dataset()
