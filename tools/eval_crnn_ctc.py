@@ -12,10 +12,7 @@ import numpy as np
 
 from crnn_model import model
 
-os.environ["CUDA_VISIBLE_DEVICES"]=""
-
-_IMAGE_SIZE = (100, 32)
-_SEQUEENCE_LENGTH = 25 # 100 /4
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 # ------------------------------------Basic prameters------------------------------------
 tf.app.flags.DEFINE_string(
@@ -90,25 +87,27 @@ def _read_tfrecord(tfrecord_path, num_epochs=None):
                                            'labels': tf.VarLenFeature(tf.int64),
                                            'imagenames': tf.FixedLenFeature([], tf.string),
                                        })
-    images = tf.decode_raw(features['images'], tf.uint8)
-    w, h = _IMAGE_SIZE 
-    images = tf.reshape(images, [h, w, 3])
-    labels = features['labels']
-    labels = tf.cast(labels, tf.int32)
+    images = tf.image.decode_jpeg(features['images'])
+    images.set_shape([32, None, 3])
+    images = tf.cast(images, tf.float32)
+    labels = tf.cast(features['labels'], tf.int32)
+    sequence_length = tf.cast(tf.shape(images)[-2] / 4, tf.int32)
     imagenames = features['imagenames']
-    return images, labels, imagenames
-    
+    return images, labels, sequence_length, imagenames
 
 def _eval_crnn_ctc():
     tfrecord_path = os.path.join(FLAGS.data_dir, 'validation.tfrecord')
-    images, labels, imagenames = _read_tfrecord(tfrecord_path=tfrecord_path)
+    images, labels, sequence_lengths, imagenames = _read_tfrecord(tfrecord_path=tfrecord_path)
 
     # decode the training data from tfrecords
-    input_images, input_labels, input_names = tf.train.batch(
-        tensors=[images, labels, imagenames], batch_size=FLAGS.batch_size,
+    batch_images, batch_labels, batch_sequence_lengths, batch_imagenames = tf.train.batch(
+        tensors=[images, labels, sequence_lengths, imagenames], batch_size=FLAGS.batch_size, dynamic_pad=True,
         capacity=1000 + 2*FLAGS.batch_size, num_threads=FLAGS.num_threads)
 
-    input_images = tf.cast(x=input_images, dtype=tf.float32)
+    input_images = tf.placeholder(tf.float32, shape=[FLAGS.batch_size, 32, None, 3], name='input_images')
+    input_labels = tf.sparse_placeholder(tf.int32, name='input_labels')
+    input_sequence_lengths = tf.placeholder(dtype=tf.int32, shape=[FLAGS.batch_size], name='input_sequence_lengths')
+
     char_map_dict = json.load(open(FLAGS.char_map_json_file, 'r'))
     # initialise the net model
     crnn_net = model.CRNNCTCNetwork(phase='test',
@@ -117,9 +116,9 @@ def _eval_crnn_ctc():
                                     num_classes=len(char_map_dict.keys()) + 1)
 
     with tf.variable_scope('CRNN_CTC', reuse=False):
-        net_out = crnn_net.build_network(input_tensor=input_images)
+        net_out = crnn_net.build_network(images=input_images, sequence_length=input_sequence_lengths)
 
-    ctc_decoded, ct_log_prob = tf.nn.ctc_beam_search_decoder(net_out, _SEQUEENCE_LENGTH*np.ones(FLAGS.batch_size), merge_repeated=False)
+    ctc_decoded, ct_log_prob = tf.nn.ctc_beam_search_decoder(net_out, input_sequence_lengths, merge_repeated=False)
 
     # set checkpoint saver
     saver = tf.train.Saver()
@@ -142,11 +141,15 @@ def _eval_crnn_ctc():
         accuracy = []
 
         for _ in range(step_nums):
-            preds, imgs, lbls, names = sess.run([ctc_decoded, input_images, input_labels, input_names])
- 
+            imgs, lbls, seq_lens, names = sess.run([batch_images, batch_labels, batch_sequence_lengths, batch_imagenames])
+            preds = sess.run(ctc_decoded, feed_dict={input_images:imgs, input_labels:lbls, input_sequence_lengths:seq_lens})
+
             preds = _sparse_matrix_to_list(preds[0])
             lbls = _sparse_matrix_to_list(lbls)
 
+
+            #print(preds)
+            #print(lbls)
             for index, lbl in enumerate(lbls):
                 pred = preds[index]
                 total_count = len(lbl)
@@ -181,3 +184,4 @@ def main(unused_argv):
 
 if __name__ == '__main__':
     tf.app.run() 
+
