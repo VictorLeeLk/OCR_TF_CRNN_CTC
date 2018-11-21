@@ -43,7 +43,7 @@ python tools/inference_crnn_ctc.py \
 
 Result is:
 ```
-Predict 1_AFTERSHAVE_1509.jpg image as: atershave
+Predict 1_AFTERSHAVE_1509.jpg image as: aftershave
 ```
 ![1_AFTERSHAVE_1509.jpg](https://github.com/bai-shang/CRNN_CTC_Tensorflow/blob/master/test_data/images/1_AFTERSHAVE_1509.jpg?raw=true)
 ```
