@@ -14,9 +14,6 @@ from crnn_model import model
 
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
-_IMAGE_SIZE = (100, 32)
-_SEQUEENCE_LENGTH = 25 # 100 /4
-
 # ------------------------------------Basic prameters------------------------------------
 tf.app.flags.DEFINE_string(
     'data_dir', './tfrecords/', 'Path to the directory containing data tf record.')
@@ -109,38 +106,43 @@ def _read_tfrecord(tfrecord_path, num_epochs=None):
                                            'labels': tf.VarLenFeature(tf.int64),
                                            'imagenames': tf.FixedLenFeature([], tf.string),
                                        })
-    images = tf.decode_raw(features['images'], tf.uint8)
-    w, h = _IMAGE_SIZE 
-    images = tf.reshape(images, [h, w, 3])
-    labels = features['labels']
-    labels = tf.cast(labels, tf.int32)
+    images = tf.image.decode_jpeg(features['images'])
+    images.set_shape([32, None, 3])
+    images = tf.cast(images, tf.float32)
+    labels = tf.cast(features['labels'], tf.int32)
+    sequence_length = tf.cast(tf.shape(images)[-2] / 4, tf.int32)
     imagenames = features['imagenames']
-    return images, labels, imagenames
+    return images, labels, sequence_length, imagenames
     
 
 def _train_crnn_ctc():
     tfrecord_path = os.path.join(FLAGS.data_dir, 'train.tfrecord')
-    images, labels, _ = _read_tfrecord(tfrecord_path=tfrecord_path)
+    images, labels, sequence_lengths, _ = _read_tfrecord(tfrecord_path=tfrecord_path)
 
     # decode the training data from tfrecords
-    input_images, input_labels = tf.train.shuffle_batch(
-        tensors=[images, labels], batch_size=FLAGS.batch_size,
-        capacity=1000 + 2*FLAGS.batch_size, min_after_dequeue=100, num_threads=FLAGS.num_threads)
+    batch_images, batch_labels, batch_sequence_lengths = tf.train.batch(
+        tensors=[images, labels, sequence_lengths], batch_size=FLAGS.batch_size, dynamic_pad=True,
+        capacity=1000 + 2*FLAGS.batch_size, num_threads=FLAGS.num_threads)
 
-    input_images = tf.cast(x=input_images, dtype=tf.float32)
+    input_images = tf.placeholder(tf.float32, shape=[FLAGS.batch_size, 32, None, 3], name='input_images')
+    input_labels = tf.sparse_placeholder(tf.int32, name='input_labels')
+    input_sequence_lengths = tf.placeholder(dtype=tf.int32, shape=[FLAGS.batch_size], name='input_sequence_lengths')
+
     char_map_dict = json.load(open(FLAGS.char_map_json_file, 'r'))
     # initialise the net model
     crnn_net = model.CRNNCTCNetwork(phase='train',
                                     hidden_num=FLAGS.lstm_hidden_uints,
                                     layers_num=FLAGS.lstm_hidden_layers,
                                     num_classes=len(char_map_dict.keys()) + 1)
-
+ 
     with tf.variable_scope('CRNN_CTC', reuse=False):
-        net_out = crnn_net.build_network(input_tensor=input_images)
+        net_out = crnn_net.build_network(images=input_images, sequence_length=input_sequence_lengths)
 
-    ctc_loss = tf.reduce_mean(tf.nn.ctc_loss(labels=input_labels, inputs=net_out, sequence_length=_SEQUEENCE_LENGTH*np.ones(FLAGS.batch_size)))
+    ctc_loss = tf.reduce_mean(
+        tf.nn.ctc_loss(labels=input_labels, inputs=net_out, sequence_length=input_sequence_lengths,
+        ignore_longer_outputs_than_inputs=True))
 
-    ctc_decoded, ct_log_prob = tf.nn.ctc_beam_search_decoder(net_out, _SEQUEENCE_LENGTH*np.ones(FLAGS.batch_size), merge_repeated=False)
+    ctc_decoded, ct_log_prob = tf.nn.ctc_beam_search_decoder(net_out, input_sequence_lengths, merge_repeated=False)
 
     sequence_distance = tf.reduce_mean(tf.edit_distance(tf.cast(ctc_decoded[0], tf.int32), input_labels))
 
@@ -181,8 +183,11 @@ def _train_crnn_ctc():
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
         for step in range(FLAGS.max_train_steps):
-            _, cl, lr, sd, preds, gt_labels, summary = sess.run(
-                [optimizer, ctc_loss, learning_rate, sequence_distance, ctc_decoded, input_labels, merge_summary_op])
+            imgs, lbls, seq_lens = sess.run([batch_images, batch_labels, batch_sequence_lengths])
+
+            _, cl, lr, sd, preds, summary = sess.run(
+                [optimizer, ctc_loss, learning_rate, sequence_distance, ctc_decoded, merge_summary_op],
+                feed_dict = {input_images:imgs, input_labels:lbls, input_sequence_lengths:seq_lens})
 
             if (step + 1) % FLAGS.step_per_save == 0: 
                 summary_writer.add_summary(summary=summary, global_step=step)
@@ -191,7 +196,7 @@ def _train_crnn_ctc():
             if (step + 1) % FLAGS.step_per_eval == 0:
                 # calculate the precision
                 preds = _sparse_matrix_to_list(preds[0])
-                gt_labels = _sparse_matrix_to_list(gt_labels)
+                gt_labels = _sparse_matrix_to_list(lbls)
 
                 accuracy = []
 
