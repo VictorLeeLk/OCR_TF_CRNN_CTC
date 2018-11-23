@@ -98,6 +98,3 @@ During my experiment the loss drops as follow:
 ```bash
 python tools/eval_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/
 ```
-
-# Todo
-The model is trained on Synth 90k and can only recognise number and English character. I will train a new model on the chinese dataset to get a more useful model.
