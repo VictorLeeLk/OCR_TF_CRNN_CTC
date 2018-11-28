@@ -20,7 +20,7 @@ Note: This software cannot run in the tensorflow lastest version r1.11.0 since i
 
 # Run demo
 
-Asume your current work directory is CRNN_CTC_Tensorflow：
+Asume your current work directory is OCR_TF_CRNN_CTC：
 ```bash
 cd path/to/your/OCR_TF_CRNN_CTC/
 ```
