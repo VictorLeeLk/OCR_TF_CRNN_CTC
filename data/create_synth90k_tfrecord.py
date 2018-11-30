@@ -45,8 +45,6 @@ def _int64_feature(value):
     return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
 
 def _bytes_feature(value):
-    if sys.version_info[0] > 2:
-        value = value.encode('utf-8') # convert string object to bytes
     if not isinstance(value, list):
         value = [value]
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=value))
@@ -83,7 +81,10 @@ def _write_tfrecord(dataset_split, anno_lines):
             image = cv2.resize(image, (width, height))
             is_success, image_buffer = cv2.imencode('.jpg', image)
             if not is_success:
-                continue 
+                continue
+ 
+            # convert string object to bytes in py3
+            image_name = image_name if sys.version_info[0] < 3 else image_name.encode('utf-8') 
 
             features = tf.train.Features(feature={
                'labels': _int64_feature(_string_to_int(label)),
