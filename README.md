@@ -3,7 +3,7 @@ This software implements the Convolutional Recurrent Neural Network (CRNN), a co
 
 "An End-to-End Trainable Neural Network for Image-based Sequence Recognition and Its Application to Scene Text Recognition" : https://arxiv.org/abs/1507.05717  
 
-More details for CRNN and CTC loss (chinese): https://zhuanlan.zhihu.com/p/43534801
+More details for CRNN and CTC loss (in chinese): https://zhuanlan.zhihu.com/p/43534801
 
 # Dependencies
 All dependencies should be installed are as follow:  
