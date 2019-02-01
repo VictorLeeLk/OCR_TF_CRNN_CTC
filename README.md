@@ -37,7 +37,7 @@ Run inference demo:
 ```bash
 python tools/inference_crnn_ctc.py \
   --image_dir ./test_data/images/ --image_list ./test_data/image_list.txt \
-  --model_dir path/to/your/bs_synth90k_model/
+  --model_dir /path/to/your/bs_synth90k_model/
 ```
 
 Result is:
