@@ -72,7 +72,6 @@ def _write_tfrecord(dataset_split, anno_lines):
             image = cv2.imread(image_path)
             if image is None: 
                 continue # skip bad image.
-            image = cv2.resize(image, _IMAGE_SIZE)
 
             h, w, c = image.shape
             height = _IMAGE_HEIGHT
