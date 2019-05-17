@@ -57,7 +57,7 @@ def _string_to_int(label):
         int_list.append(char_map_dict[c])
     return int_list
 
-def _write_tfrecord(dataset_split, anno_lines):
+def _write_tfrecord(dataset_split, anno_lines, char_map_dict=None):
     if not os.path.exists(FLAGS.data_dir):
         os.makedirs(FLAGS.data_dir)
 
@@ -87,7 +87,7 @@ def _write_tfrecord(dataset_split, anno_lines):
             image_name = image_name if sys.version_info[0] < 3 else image_name.encode('utf-8') 
 
             features = tf.train.Features(feature={
-               'labels': _int64_feature(_string_to_int(label)),
+               'labels': _int64_feature(_string_to_int(label, char_map_dict)),
                'images': _bytes_feature(image_buffer.tostring()),
                'imagenames': _bytes_feature(image_name)
             })
@@ -101,6 +101,8 @@ def _write_tfrecord(dataset_split, anno_lines):
         sys.stdout.flush()
 
 def _convert_dataset():
+    char_map_dict = json.load(open(FLAGS.char_map_json_file, 'r'))
+    
     with open(FLAGS.anno_file, 'r') as anno_fp:
         anno_lines = anno_fp.readlines()
 
@@ -114,7 +116,7 @@ def _convert_dataset():
 
     dataset_anno_lines = {'train' : train_anno_lines, 'validation' : validation_anno_lines}
     for dataset_split in ['train', 'validation']:
-        _write_tfrecord(dataset_split, dataset_anno_lines[dataset_split])
+        _write_tfrecord(dataset_split, dataset_anno_lines[dataset_split], char_map_dict)
 
     #_write_tfrecord('validation', validation_anno_lines)
 
