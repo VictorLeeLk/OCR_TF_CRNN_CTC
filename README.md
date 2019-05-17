@@ -37,7 +37,7 @@ Run inference demo:
 ```bash
 python tools/inference_crnn_ctc.py \
   --image_dir ./test_data/images/ --image_list ./test_data/image_list.txt \
-  --model_dir /path/to/your/bs_synth90k_model/
+  --model_dir /path/to/your/bs_synth90k_model/ 2>/dev/null
 ```
 
 Result is:
@@ -96,5 +96,5 @@ During my experiment the loss drops as follow:
 
 ### Evaluate model
 ```bash
-python tools/eval_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/
+python tools/eval_crnn_ctc.py --data_dir ./tfrecords/ --model_dir ./model/ 2>/dev/null
 ```
