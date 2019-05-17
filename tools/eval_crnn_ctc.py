@@ -144,8 +144,8 @@ def _eval_crnn_ctc():
             imgs, lbls, seq_lens, names = sess.run([batch_images, batch_labels, batch_sequence_lengths, batch_imagenames])
             preds = sess.run(ctc_decoded, feed_dict={input_images:imgs, input_labels:lbls, input_sequence_lengths:seq_lens})
 
-            preds = _sparse_matrix_to_list(preds[0])
-            lbls = _sparse_matrix_to_list(lbls)
+            preds = _sparse_matrix_to_list(preds[0], char_map_dict)
+            lbls = _sparse_matrix_to_list(lbls, char_map_dict)
 
 
             #print(preds)
