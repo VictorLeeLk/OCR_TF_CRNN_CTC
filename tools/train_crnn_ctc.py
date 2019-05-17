@@ -195,8 +195,8 @@ def _train_crnn_ctc():
 
             if (step + 1) % FLAGS.step_per_eval == 0:
                 # calculate the precision
-                preds = _sparse_matrix_to_list(preds[0])
-                gt_labels = _sparse_matrix_to_list(lbls)
+                preds = _sparse_matrix_to_list(preds[0], char_map_dict)
+                gt_labels = _sparse_matrix_to_list(lbls, char_map_dict)
 
                 accuracy = []
 
