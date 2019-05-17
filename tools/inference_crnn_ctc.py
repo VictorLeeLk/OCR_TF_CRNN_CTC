@@ -113,7 +113,7 @@ def _inference_crnn_ctc():
 
             preds = sess.run(ctc_decoded, feed_dict={input_image:image, input_sequence_length:seq_len})
  
-            preds = _sparse_matrix_to_list(preds[0])
+            preds = _sparse_matrix_to_list(preds[0], char_map_dict)
 
             print('Predict {:s} image as: {:s}'.format(image_name, preds[0]))
         
