@@ -49,9 +49,10 @@ def _bytes_feature(value):
         value = [value]
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=value))
 
-def _string_to_int(label):
-    # convert string label to int list by char map
-    char_map_dict = json.load(open(FLAGS.char_map_json_file, 'r'))
+def _string_to_int(label, char_map_dict=None):
+    if char_map_dict is None:
+        # convert string label to int list by char map
+        char_map_dict = json.load(open(FLAGS.char_map_json_file, 'r'))
     int_list = []
     for c in label:
         int_list.append(char_map_dict[c])
